@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  &__title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
