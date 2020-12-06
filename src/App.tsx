@@ -1,5 +1,20 @@
-import * as React from 'react';
+import * as React from 'react'
+import { Provider } from 'react-redux'
+import { store } from './store'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { routes } from './routes'
+import HeaderComponent from './components/header'
+import { Container } from '@material-ui/core'
 
 export const App = () => (
-  <div className='app__title'>Hello Worlds</div>
+	<Provider store={ store }>
+		<BrowserRouter>
+			<HeaderComponent />
+			<Container maxWidth="lg">
+				<Switch>
+					{ routes.map((route, idx) => <Route key={ idx } {...route} />) }
+				</Switch>
+			</Container>
+		</BrowserRouter>
+	</Provider>
 )
