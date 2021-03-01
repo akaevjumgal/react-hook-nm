@@ -1,5 +1,7 @@
 const path = require('path')
 
+const sourcePath = path.join(__dirname, './src')
+
 module.exports = {
 	mode: "development",
 	entry: "./src/index.tsx",
@@ -15,7 +17,14 @@ module.exports = {
 		poll: 1000
 	},
 	resolve: {
-		extensions: [".ts", ".tsx", ".js", ".json"]
+		extensions: [".ts", ".tsx", ".js", ".json"],
+		alias: {
+			"@components": path.resolve(sourcePath, "components"),
+			"@models": path.resolve(sourcePath, "models"),
+			"@views": path.resolve(sourcePath, "views"),
+			"@store": path.resolve(sourcePath, "store"),
+		},
+		modules: [path.resolve('./src'), path.resolve('./node_modules')],
 	},
 	devtool: "source-map",
 	module: {

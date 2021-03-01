@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "jsx": "react",
     "module": "commonjs",
     "noImplicitAny": true,
@@ -7,7 +9,14 @@
     "preserveConstEnums": true,
     "removeComments": true,
     "sourceMap": true,
-    "target": "es5"
+    "target": "es5",
+    "baseUrl": "src",
+    "paths": {
+      "@views/*": ["views/*"],
+      "@models/*": ["models/*"],
+      "@components/*": ["components/*"],
+      "@store/*": ["store/*"]
+    }
   },
   "include": [
     "./src/**/*"

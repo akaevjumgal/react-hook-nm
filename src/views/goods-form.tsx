@@ -7,26 +7,51 @@ import {
 	Input,
 	InputAdornment,
 	InputLabel,
-	OutlinedInput, Switch,
+	OutlinedInput, Snackbar, Switch,
 	TextField
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import { GoodsState } from '../store/goods.state'
-import { GoodsDispatcher } from '../store/goods.dispatcher'
-import { AppState } from '../store/reducers'
-import { Goods } from '../models/goods.model'
+import { GoodsState } from '@store/goods.state'
+import { GoodsDispatcher } from '@store/goods.dispatcher'
+import { AppState } from '@store/reducers'
+import { Goods } from '@models/goods.model'
 import firebaseContext from '../firebase.init'
+import { useState } from 'react'
+import { Alert, Color } from '@material-ui/lab'
+
+type AlertMessage = { [key in Color]: string }
+
+const MESSAGES: Partial<AlertMessage> = {
+	success: 'Good successfully has been added!',
+	error: 'Request failed'
+}
 
 const GoodsFormPage = () => {
 	const { form } = useSelector<AppState, Partial<GoodsState>>(({ goods }) => goods)
 	const dispatcher = new GoodsDispatcher(useDispatch())
+	const [snack, setSnack] = useState<{ type: Color, opened: boolean }>({
+		type: 'success',
+		opened: false
+	})
 
 	const submit = async (goods: Partial<Goods>) => {
-		await firebaseContext.firestore().collection('goods').add(goods)
+		try {
+			await firebaseContext.firestore().collection('goods').add(goods)
+			setSnack({ type: 'success', opened: true })
+		} catch (e) {
+			setSnack({  type: 'error', opened: true, })
+		}
 	}
-	console.log()
 	return (
 		<Box py={ 5 }>
+			<Snackbar
+				anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+				open={snack.opened}
+			>
+				<Alert severity={snack.type}>
+					{MESSAGES[snack.type]}
+				</Alert>
+			</Snackbar>
 			<Grid container direction="column">
 				<Box width={ 300 }>
 					<TextField
